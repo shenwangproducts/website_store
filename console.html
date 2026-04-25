@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shenall Console - จัดการแอปพลิเคชัน</title>
+    <link rel="stylesheet" href="output.css">
+     <link rel="icon" href="asset/consoleicon.png" type="image/png">
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen font-sans">
+    
+    <!-- 🌟 NAVBAR FOR DESKTOP -->
+    <nav class="sticky top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-40 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="shrink-0 flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                <span class="text-2xl font-black tracking-wider text-gray-900">SHENALL<span class="text-blue-600">.</span> <span class="font-normal text-gray-500 text-xl ml-2">Console</span></span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button onclick="showGuidePage()" class="text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors">คู่มือใช้งาน</button>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <div id="console-profile-name" class="text-sm font-bold text-gray-900">ชื่อนักพัฒนา</div>
+                        <div id="console-profile-type" class="text-[10px] text-gray-500">ประเภทบัญชี</div>
+                    </div>
+                    <div id="console-profile-avatar" onclick="editDevProfile()" class="w-10 h-10 rounded-full bg-linear-to-r from-blue-500 to-indigo-600 shadow-sm border-2 border-white cursor-pointer active:scale-95 transition-transform flex items-center justify-center overflow-hidden text-white font-bold text-xs"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto py-10 px-6">
+
+        <!-- 🔐 Login State -->
+        <div id="console-state-login" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-xl mx-auto text-center">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🔐</div>
+                <h2 class="text-xl font-black text-gray-900 mb-2">เข้าสู่ระบบนักพัฒนา</h2>
+                <p class="text-sm text-gray-500 mb-6">กรุณาเข้าสู่ระบบด้วยบัญชี Chatchat เพื่อเริ่มนำแอปของคุณขึ้นสโตร์</p>
+                <button onclick="loginWithChatchat()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors text-base shadow-md">
+                    เข้าสู่ระบบด้วย Chatchat
+                </button>
+            </div>
+        </div>
+
+        <!-- Developer Registration Step 1: Account Type -->
+        <div id="console-state-register-1" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-xl mx-auto text-center">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">👨‍💻</div>
+                <h2 class="text-xl font-black text-gray-900 mb-2">สมัครบัญชีนักพัฒนา</h2>
+                <p class="text-sm text-gray-500 mb-6">เลือกประเภทบัญชีของคุณเพื่อเริ่มต้นนำแอปขึ้นสโตร์</p>
+                
+                <div class="space-y-4 text-left">
+                    <label class="flex items-center p-5 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                        <input type="radio" name="devAccountType" checked class="text-blue-600 w-5 h-5 mr-4">
+                        <div>
+                            <div class="text-base font-bold text-gray-800">บุคคลทั่วไป (Individual)</div>
+                            <div class="text-xs text-gray-500 mt-1">สำหรับนักพัฒนาอิสระ หรือฟรีแลนซ์</div>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-5 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                        <input type="radio" name="devAccountType" class="text-blue-600 w-5 h-5 mr-4">
+                        <div>
+                            <div class="text-base font-bold text-gray-800">องค์กร (Organization)</div>
+                            <div class="text-xs text-gray-500 mt-1">สำหรับหน่วยงานรัฐ, สถานศึกษา หรือองค์กรไม่แสวงหากำไร</div>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-5 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                        <input type="radio" name="devAccountType" class="text-blue-600 w-5 h-5 mr-4">
+                        <div>
+                            <div class="text-base font-bold text-gray-800">บริษัท (Company)</div>
+                            <div class="text-xs text-gray-500 mt-1">สำหรับนิติบุคคล หรือบริษัทที่จดทะเบียนเชิงพาณิชย์</div>
+                        </div>
+                    </label>
+                </div>
+
+                <button onclick="goToDevRegisterStep2()" class="w-full mt-8 bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors text-base shadow-md">
+                    ดำเนินการต่อ
+                </button>
+            </div>
+        </div>
+
+        <!-- Developer Registration Step 2: Brand Info -->
+        <div id="console-state-register-2" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-2xl mx-auto">
+                <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                    <button onclick="goToDevRegisterStep1()" class="text-gray-400 hover:text-gray-600 mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <h2 class="text-lg font-bold text-gray-800">ข้อมูลนักพัฒนา / แบรนด์</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">โลโก้แบรนด์ / ผู้พัฒนา *</label>
+                        <input type="file" id="devLogoInput" class="hidden" accept="image/png, image/jpeg" onchange="handleLogoUpload(this)">
+                        <div onclick="document.getElementById('devLogoInput').click()" class="flex items-center space-x-4">
+                            <div id="devLogoPreview" class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-blue-500 hover:border-blue-400 active:bg-gray-200 cursor-pointer transition-colors shrink-0 overflow-hidden">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <div>
+                                <button class="text-sm font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg active:bg-blue-100 transition-colors cursor-pointer pointer-events-none">อัปโหลดรูปภาพ</button>
+                                <p class="text-xs text-gray-400 mt-2">ขนาดแนะนำ 512x512 px (JPG หรือ PNG)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ชื่อแบรนด์ / ผู้พัฒนาที่จะแสดงบนสโตร์ *</label>
+                        <input type="text" id="devBrandName" placeholder="เช่น Shenall Studio" class="w-full border border-gray-300 rounded-xl px-5 py-3 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ที่อยู่สำหรับการติดต่อ *</label>
+                        <textarea id="devAddress" rows="3" placeholder="ระบุที่อยู่ครบถ้วน..." class="w-full border border-gray-300 rounded-xl px-5 py-3 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">เว็บไซต์ (ถ้ามี)</label>
+                        <input type="url" id="devWebsite" placeholder="https://..." class="w-full border border-gray-300 rounded-xl px-5 py-3 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                    </div>
+                    <button onclick="completeDevRegistration()" class="w-full mt-4 bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-colors text-base shadow-md">
+                        ยืนยันการสมัครบัญชี
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📖 Developer Guide (คู่มือใช้งาน) -->
+        <div id="console-state-guide" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-3xl mx-auto">
+                <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                    <button onclick="hideGuidePage()" class="text-gray-400 hover:text-gray-600 mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <h2 class="text-xl font-bold text-gray-800">คู่มือการใช้งานสำหรับนักพัฒนา (Developer Guide)</h2>
+                </div>
+
+                <div class="space-y-8 text-gray-600 text-sm leading-relaxed">
+                    <!-- Section 1 -->
+                    <div>
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold mr-3">1</div>
+                            <h3 class="text-base font-bold text-gray-900">การเปลี่ยนบัญชีจากผู้ใช้งาน เป็นนักพัฒนา</h3>
+                        </div>
+                        <p class="pl-11">เมื่อคุณเข้าสู่ระบบด้วยบัญชี Chatchat เรียบร้อยแล้ว ระบบจะให้คุณเลือกลงทะเบียนประเภทบัญชีนักพัฒนา (บุคคลทั่วไป, องค์กร หรือ บริษัท) จากนั้นกรอกข้อมูลแบรนด์และที่อยู่ให้ครบถ้วน เพื่อใช้ในการรับรองและรับรายได้จากการขายแอปพลิเคชัน</p>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div>
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold mr-3">2</div>
+                            <h3 class="text-base font-bold text-gray-900">วิธีการอัปโหลดโปรเจกต์ลง Shenall Store</h3>
+                        </div>
+                        <p class="pl-11 mb-2">การนำแอปพลิเคชันขึ้นสโตร์สามารถทำได้ง่ายๆ ผ่านปุ่ม <strong>"+ สร้างแอป"</strong> ในหน้าแดชบอร์ด โดยมี 4 ขั้นตอนดังนี้:</p>
+                        <ul class="list-disc pl-16 space-y-1">
+                            <li><strong>เริ่มต้น:</strong> ตั้งชื่อแอปพลิเคชัน, เลือกภาษาเริ่มต้น, ระบุประเภทแอป และกำหนดราคา (ฟรี/มีค่าใช้จ่าย)</li>
+                            <li><strong>ข้อมูลร้านค้า:</strong> เลือกหมวดหมู่, เขียนคำอธิบายสั้นและเต็มเพื่อดึงดูดผู้ใช้งาน</li>
+                            <li><strong>เนื้อหาและกลุ่มเป้าหมาย:</strong> ระบุเรตติ้งอายุ, การมีโฆษณาในแอป และนโยบานความเป็นส่วนตัว</li>
+                            <li><strong>อัปโหลด:</strong> อัปโหลดไฟล์ APK/AAB, รูปภาพสกรีนช็อต และส่งให้ระบบ <strong>Shenall Guard AI</strong> สแกนไวรัสแบบเรียลไทม์</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div>
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-bold mr-3">3</div>
+                            <h3 class="text-base font-bold text-gray-900">สิทธิประโยชน์และส่วนแบ่งรายได้ (Revenue Share)</h3>
+                        </div>
+                        <p class="pl-11 mb-2">สำหรับ <strong>แอปพลิเคชันแบบคิดเงิน (Paid Apps)</strong> ทาง Shenall Store มีนโยบายแบ่งปันรายได้ที่เอื้อประโยชน์ต่อนักพัฒนามากที่สุด โดยหักค่าธรรมเนียมรวมเพียง 15% แบ่งเป็น:</p>
+                        <div class="pl-11 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 mb-6">
+                            <div class="bg-green-50 border border-green-100 p-4 rounded-xl text-center"><div class="text-2xl font-black text-green-600 mb-1">85%</div><div class="text-xs font-bold text-gray-700">รายได้ของนักพัฒนา</div></div>
+                            <div class="bg-gray-50 border border-gray-100 p-4 rounded-xl text-center"><div class="text-2xl font-black text-gray-600 mb-1">10%</div><div class="text-xs font-bold text-gray-700">ค่าธรรมเนียมแพลตฟอร์ม</div></div>
+                            <div class="bg-purple-50 border border-purple-100 p-4 rounded-xl text-center"><div class="text-2xl font-black text-purple-600 mb-1">5%</div><div class="text-xs font-bold text-gray-700">ค่าดูแลและโปรโมทพิเศษ<br><span class="text-[10px] font-normal text-gray-500">(ช่วยดันฟีดและเช่าเซิร์ฟเวอร์)</span></div></div>
+                        </div>
+                        
+                        <div class="pl-11">
+                            <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl shadow-sm">
+                                <h4 class="text-sm font-bold text-orange-800 mb-2">⚠️ กรณีแอปพลิเคชันฟรี แต่มีการเรียกเก็บเงินภายในแอป (In-App Purchases)</h4>
+                                <p class="text-xs text-orange-700 leading-relaxed mb-3">
+                                    หากแอปพลิเคชันเปิดให้ดาวน์โหลดฟรี แต่มีระบบซื้อขาย แลกเปลี่ยน หรือเรียกเก็บเงินภายในแอป ทางสโตร์ถือว่าแอปพลิเคชันสร้างรายได้และใช้พื้นที่/ทรัพยากรของทางเรา จึงมีเงื่อนไขเรียกเก็บดังนี้:
+                                </p>
+                                <ul class="list-disc pl-5 text-xs text-orange-800 space-y-1.5">
+                                    <li><strong>หัก 10%</strong> เป็นค่าเช่าพื้นที่และเซิร์ฟเวอร์ สำหรับธุรกรรมการเรียกเก็บเงินทั่วไป</li>
+                                    <li><strong>หัก 20%</strong> ในกรณีที่แอปมีการเรียกเก็บเงิน หรือระบบซื้อขายมีมูลค่าต่อรายการ <strong>เกิน 2,000 บาท</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Dashboard -->
+        <div id="console-state-dashboard" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">แอปพลิเคชันทั้งหมด</h2>
+                        <button onclick="startNewAppFlow()" class="text-xs font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-full active:bg-blue-100 transition-colors">
+                    + สร้างแอป
+                </button>
+            </div>
+
+            <div id="developer-apps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 🔄 JavaScript จะดึงข้อมูลแอปของคุณมาแสดงที่นี่อัตโนมัติ -->
+            </div>
+        </div>
+
+        <div id="console-state-step1" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-3xl mx-auto">
+                <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                    <button onclick="document.getElementById('console-state-step1').classList.add('hidden'); document.getElementById('console-state-dashboard').classList.remove('hidden');" class="text-gray-400 hover:text-gray-600 mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <h2 class="text-xl font-bold text-gray-800">สร้างแอปใหม่</h2>
+                </div>
+
+                <!-- Stepper -->
+                <div class="flex items-center space-x-4 text-sm font-bold text-gray-400 border-b border-gray-100 pb-4 mb-6 overflow-x-auto">
+                    <span class="text-blue-600">1. เริ่มต้น</span><span class="text-gray-300">&gt;</span>
+                    <span>2. ร้านค้า</span><span class="text-gray-300">&gt;</span>
+                    <span>3. เนื้อหา</span><span class="text-gray-300">&gt;</span>
+                    <span>4. อัปโหลด</span>
+                </div>
+
+                <div class="space-y-6 text-left">
+                    <!-- 🌟 อัปโหลดไอคอนแอป -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">ไอคอนแอปพลิเคชัน *</label>
+                        <div class="flex items-center space-x-4">
+                            <input type="file" id="appIconInput" class="hidden" accept="image/png, image/jpeg, image/webp" onchange="handleAppIconUpload(this)">
+                            <div id="appIconPreview" onclick="document.getElementById('appIconInput').click()" class="w-20 h-20 rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-blue-500 hover:border-blue-400 active:bg-gray-200 cursor-pointer transition-colors shrink-0 overflow-hidden shadow-sm">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <button onclick="document.getElementById('appIconInput').click()" class="text-xs font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg active:bg-blue-100 transition-colors shadow-sm">เลือกรูปภาพ</button>
+                                <p class="text-[10px] text-gray-400 mt-1.5">ขนาดแนะนำ 512x512 px (JPG หรือ PNG)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ชื่อแอป *</label>
+                            <input type="text" id="devAppName" placeholder="เช่น Epic Fantasy RPG" class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ภาษาเริ่มต้น *</label>
+                            <select class="w-full bg-white border border-gray-300 text-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-blue-500 font-medium appearance-none">
+                                <option>ไทย (th-TH)</option>
+                                <option>English (en-US)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">ประเภทและราคา *</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="appType" checked class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">แอปพลิเคชัน</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="appType" class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">เกม</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="appPrice" id="priceFree" value="free" checked onchange="togglePriceOptions()" class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">ฟรี</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="appPrice" id="pricePaid" value="paid" onchange="togglePriceOptions()" class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">มีค่าใช้จ่าย</span>
+                            </label>
+                        </div>
+
+                        <!-- 🌟 ตัวเลือกสำหรับแอปฟรี (In-App Purchases) -->
+                        <div id="free-options-container" class="mt-4 p-5 bg-gray-50 rounded-2xl border border-gray-200">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">ระบบซื้อขายภายในแอป (In-App Purchases) *</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="iapDeduction" value="0" checked class="text-blue-600 w-4 h-4 mr-3">
+                                    <span class="text-sm font-bold text-gray-800">ไม่มีการเรียกเก็บเงินใดๆ (0%)</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="iapDeduction" value="10" class="text-blue-600 w-4 h-4 mr-3">
+                                    <span class="text-sm font-bold text-gray-800">มีการซื้อขายไอเทมทั่วไป <span class="text-orange-600 text-xs font-normal">(แพลตฟอร์มหัก 10%)</span></span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="iapDeduction" value="20" class="text-blue-600 w-4 h-4 mr-3">
+                                    <span class="text-sm font-bold text-gray-800">มีการซื้อขายมูลค่าสูงกว่า 2,000 บาท <span class="text-orange-600 text-xs font-normal">(แพลตฟอร์มหัก 20%)</span></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 🌟 ตัวเลือกสำหรับแอปเสียเงิน (ตั้งราคา) -->
+                        <div id="paid-options-container" class="mt-4 p-5 bg-gray-50 rounded-2xl border border-gray-200 hidden">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ราคาแอปพลิเคชัน (บาท) *</label>
+                            <input type="number" id="devAppPriceValue" min="1" placeholder="เช่น 29" oninput="calculateRevenue()" class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none mb-4">
+                            
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm font-bold text-blue-900">รายได้สุทธิของคุณ (85%)</div>
+                                    <div class="text-[10px] text-blue-700 mt-0.5">หักค่าธรรมเนียมสโตร์และค่าดูแลพิเศษ 15%</div>
+                                </div>
+                                <div class="text-xl font-black text-blue-700">฿<span id="calculatedRevenue">0.00</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="goToConsoleStep2()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl mt-6 hover:bg-blue-700 transition-colors">ถัดไป: ข้อมูลร้านค้า</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="console-state-step2" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-3xl mx-auto">
+                <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                    <button onclick="goToConsoleStep1()" class="text-gray-400 hover:text-gray-600 mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <h2 class="text-xl font-bold text-gray-800">ข้อมูลร้านค้า</h2>
+                </div>
+
+                <!-- Stepper -->
+                <div class="flex items-center space-x-4 text-sm font-bold text-gray-400 border-b border-gray-100 pb-4 mb-6 overflow-x-auto">
+                    <span>1. เริ่มต้น</span><span class="text-gray-300">&gt;</span>
+                    <span class="text-blue-600">2. ร้านค้า</span><span class="text-gray-300">&gt;</span>
+                    <span>3. เนื้อหา</span><span class="text-gray-300">&gt;</span>
+                    <span>4. อัปโหลด</span>
+                </div>
+
+                <div class="space-y-6 text-left">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">หมวดหมู่แอป *</label>
+                            <select id="devAppCategory" onchange="updateSubCategoryOptions()" class="w-full bg-white border border-gray-300 text-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-blue-500 font-medium appearance-none">
+                                <option value="แอปพลิเคชัน">แอปพลิเคชัน (ทั่วไป)</option>
+                                <option value="เกม">เกม</option>
+                                <option value="การศึกษา">การศึกษา</option>
+                                <option value="ธุรกิจ">ธุรกิจ</option>
+                                <option value="บันเทิง">บันเทิง</option>
+                                <option value="ไลฟ์สไตล์">ไลฟ์สไตล์</option>
+                                <option value="เครื่องมือ">เครื่องมือ</option>
+                            </select>
+                        </div>
+                        <div id="subCategoryContainer" class="hidden">
+                            <label id="subCategoryLabel" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">แนวเกม / ประเภทเครื่องมือ *</label>
+                            <select id="devAppSubCategory" class="w-full bg-white border border-gray-300 text-gray-700 rounded-xl px-5 py-3 focus:outline-none focus:border-blue-500 font-medium appearance-none">
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">อีเมลติดต่อสำหรับผู้พัฒนา *</label>
+                            <input type="email" placeholder="dev@company.com" class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">คำอธิบายแบบย่อ *</label>
+                        <textarea id="devAppShortDesc" rows="2" placeholder="จุดเด่นของแอปคุณ..." class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">คำอธิบายฉบับเต็ม *</label>
+                        <textarea rows="6" placeholder="รายละเอียดฟีเจอร์ทั้งหมด..." class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none resize-none"></textarea>
+                    </div>
+
+                    <button onclick="goToConsoleStep3()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl mt-6 hover:bg-blue-700 transition-colors">ถัดไป: เนื้อหาและกลุ่มเป้าหมาย</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="console-state-step3" class="hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 max-w-3xl mx-auto">
+                <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                    <button onclick="goToConsoleStep2()" class="text-gray-400 hover:text-gray-600 mr-3"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <h2 class="text-xl font-bold text-gray-800">เนื้อหาและกลุ่มเป้าหมาย</h2>
+                </div>
+
+                <!-- Stepper -->
+                <div class="flex items-center space-x-4 text-sm font-bold text-gray-400 border-b border-gray-100 pb-4 mb-6 overflow-x-auto">
+                    <span>1. เริ่มต้น</span><span class="text-gray-300">&gt;</span>
+                    <span>2. ร้านค้า</span><span class="text-gray-300">&gt;</span>
+                    <span class="text-blue-600">3. เนื้อหา</span><span class="text-gray-300">&gt;</span>
+                    <span>4. อัปโหลด</span>
+                </div>
+
+                <div class="space-y-6 text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">กลุ่มอายุเป้าหมาย *</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <label class="flex items-center space-x-3 text-sm font-bold text-gray-700 cursor-pointer">
+                                <input type="checkbox" class="text-blue-600 w-5 h-5 rounded border-gray-300"> <span>ต่ำกว่า 8 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-3 text-sm font-bold text-gray-700 cursor-pointer">
+                                <input type="checkbox" class="text-blue-600 w-5 h-5 rounded border-gray-300"> <span>9 - 12 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-3 text-sm font-bold text-gray-700 cursor-pointer">
+                                <input type="checkbox" checked class="text-blue-600 w-5 h-5 rounded border-gray-300"> <span>13 - 17 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-3 text-sm font-bold text-gray-700 cursor-pointer">
+                                <input type="checkbox" checked class="text-blue-600 w-5 h-5 rounded border-gray-300"> <span>18 ปีขึ้นไป</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">มีโฆษณาในแอปหรือไม่? *</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="hasAds" class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">ใช่ มีโฆษณา</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                                <input type="radio" name="hasAds" checked class="text-blue-600 w-5 h-5 mr-3">
+                                <span class="text-sm font-bold text-gray-800">ไม่มีโฆษณา</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ลิงก์นโยบายความเป็นส่วนตัว *</label>
+                        <input type="url" placeholder="https://..." class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none">
+                    </div>
+
+                    <button onclick="goToConsoleStep4()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl mt-6 hover:bg-blue-700 transition-colors">ถัดไป: อัปโหลดและเผยแพร่</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="console-state-step4" class="hidden">
+            <div class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden max-w-3xl mx-auto">
+                <div class="bg-blue-600 p-8 flex items-center relative overflow-hidden">
+                    <div class="absolute right-0 top-0 opacity-20 pointer-events-none transform translate-x-4 -translate-y-4">
+                        <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"></path></svg>
+                    </div>
+                    <button onclick="goToConsoleStep3()" class="text-white hover:text-gray-200 mr-4 relative z-10"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></button>
+                    <div class="relative z-10">
+                        <h2 class="text-white font-black text-2xl" id="displayDevAppName">อัปโหลดไฟล์</h2>
+                        <p class="text-blue-100 text-sm mt-1">ขั้นตอนสุดท้าย • อัปโหลดไฟล์และส่งให้ AI ตรวจสอบ</p>
+                    </div>
+                </div>
+
+                <div class="p-8 space-y-6">
+                    <!-- Stepper -->
+                    <div class="flex items-center space-x-4 text-sm font-bold text-gray-400 border-b border-gray-100 pb-4 mb-6 overflow-x-auto">
+                        <span>1. เริ่มต้น</span><span class="text-gray-300">&gt;</span>
+                        <span>2. ร้านค้า</span><span class="text-gray-300">&gt;</span>
+                        <span>3. เนื้อหา</span><span class="text-gray-300">&gt;</span>
+                        <span class="text-blue-600">4. อัปโหลด</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ชื่อแพ็กเกจ (Package Name) *</label>
+                            <input type="text" id="devAppPackage" placeholder="com.company.appname" class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none">
+                            <p class="text-xs text-gray-400 mt-2">ชื่อต้องไม่ซ้ำกับแอปอื่นในสโตร์</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">เวอร์ชัน (Version) *</label>
+                            <input type="text" id="devAppVersion" placeholder="เช่น 1.0.0" class="w-full border border-gray-300 rounded-xl px-5 py-3 focus:border-blue-500 outline-none">
+                            <p class="text-xs text-gray-400 mt-2">เวอร์ชันของแอปพลิเคชัน</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ไฟล์ติดตั้ง (APK / AAB) *</label>
+                            <input type="file" id="devApkInput" class="hidden" accept=".apk,.aab,.obb" onchange="handleApkUpload(this)">
+                            <div id="devApkPreviewBox" onclick="document.getElementById('devApkInput').click()" class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gray-50 hover:bg-gray-100 cursor-pointer h-40 flex flex-col justify-center items-center transition-colors">
+                                <div id="devApkIcon" class="text-4xl mb-3">📦</div>
+                                <div id="devApkText" class="text-sm text-blue-600 font-bold mb-1">เลือกไฟล์เกม หรือ แอป</div>
+                                <div id="devApkSubText" class="text-xs text-gray-500">รองรับไฟล์ขนาดใหญ่สูงสุด 100 GB</div>
+                            </div>
+                            <!-- 🌟 เพิ่ม Checkbox ยืนยันไฟล์ Universal เพื่อแยก 64/32/Emu -->
+                            <div class="mt-3 flex items-center bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                                <input type="checkbox" id="isUniversalApk" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="isUniversalApk" class="ml-2 text-[11px] font-bold text-gray-700 cursor-pointer">นี่คือไฟล์ Universal (รวม 32/64-bit และ Emu ในไฟล์เดียว)</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ภาพและวิดีโอตัวอย่าง *</label>
+                            <input type="file" id="devScreenshotInput" class="hidden" accept="image/*" multiple onchange="handleScreenshotUpload(this)">
+                            <input type="file" id="devVideoInput" class="hidden" accept="video/mp4" onchange="handleVideoUpload(this)">
+                            <!-- 🌟 Container for existing screenshots -->
+                            <div id="existing-screenshots-container" class="hidden grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                                <!-- Existing screenshots will be rendered here by JS -->
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div id="devScreenshotBox" onclick="document.getElementById('devScreenshotInput').click()" class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center bg-gray-50 hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-col items-center justify-center h-28 transition-colors">
+                                    <span class="text-3xl mb-2">🖼️</span>
+                                    <span id="devScreenshotText" class="text-sm text-blue-600 font-bold">สกรีนช็อต</span>
+                                    <span class="text-xs text-gray-400 mt-1">สูงสุด 8 ภาพ</span>
+                                </div>
+                                <div id="devVideoBox" onclick="document.getElementById('devVideoInput').click()" class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center bg-gray-50 hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-col items-center justify-center h-28 transition-colors">
+                                    <span class="text-3xl mb-2">🎬</span>
+                                    <span id="devVideoText" class="text-sm text-blue-600 font-bold">วิดีโอโปรโมท</span>
+                                    <span class="text-xs text-gray-400 mt-1">MP4 (สูงสุด 500 MB)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">ข้อกำหนดและระบบที่รองรับ *</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <div>
+                                <label class="text-sm font-bold text-gray-700 block mb-2">เวอร์ชัน Android ขั้นต่ำ</label>
+                                <select class="w-full bg-white border border-gray-300 text-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 appearance-none font-medium">
+                                    <option>Android 5.0 (Lollipop) ขึ้นไป</option>
+                                    <option>Android 8.0 (Oreo) ขึ้นไป</option>
+                                    <option>Android 10.0 ขึ้นไป</option>
+                                    <option>Android 13.0 ขึ้นไป</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sm font-bold text-gray-700 block mb-2">อุปกรณ์ที่รองรับ</label>
+                                <div class="flex flex-wrap gap-3">
+                                    <label class="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                                        <input type="checkbox" checked class="text-blue-500 rounded border-gray-300 w-4 h-4">
+                                        <span class="text-xs text-gray-700 font-bold">สมาร์ทโฟน</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                                        <input type="checkbox" checked class="text-blue-500 rounded border-gray-300 w-4 h-4">
+                                        <span class="text-xs text-gray-700 font-bold">แท็บเล็ต</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                                        <input type="checkbox" class="text-blue-500 rounded border-gray-300 w-4 h-4">
+                                        <span class="text-xs text-gray-700 font-bold">TV</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100">
+                            <button id="btnSubmitApp" onclick="startShenallAIScan()" class="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl active:bg-gray-800 transition-colors text-sm shadow-md flex justify-center items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            ส่งตรวจสอบความปลอดภัย (Submit)
+                        </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- 🛡️ ป๊อปอัป AI สแกนโค้ด (ปรับเป็น fixed สำหรับ Desktop) -->
+    <div id="aiScanModal" class="fixed inset-0 bg-gray-900 bg-opacity-90 backdrop-blur-md z-200 hidden flex-col items-center justify-center p-6 opacity-0 transition-opacity duration-300">
+        <div class="bg-gray-800 w-full max-w-lg rounded-3xl shadow-2xl p-10 relative border border-gray-700 text-center transform scale-95 transition-transform duration-300" id="aiScanModalContent">
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <div class="absolute inset-0 bg-blue-500 rounded-full opacity-20 animate-ping"></div>
+                <div class="absolute inset-2 bg-blue-600 rounded-full opacity-40 animate-pulse"></div>
+                <div class="absolute inset-4 bg-gray-900 rounded-full flex items-center justify-center border-2 border-blue-500 z-10">
+                    <span class="text-3xl">🛡️</span>
+                </div>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 tracking-wider">SHENALL <span class="text-blue-400">GUARD AI</span></h3>
+            <p id="aiScanStatus" class="text-base text-blue-300 mb-8 ai-scanning">กำลังเริ่มต้นระบบสแกนโค้ด...</p>
+            <div class="w-full h-2.5 bg-gray-700 rounded-full overflow-hidden mb-3">
+                <div id="aiScanProgress" class="h-full bg-blue-500 w-0 transition-all duration-300"></div>
+            </div>
+            <div class="flex justify-between text-xs font-mono text-gray-400">
+                <span>Malware Analysis</span>
+                <span id="aiScanPercentage">0%</span>
+            </div>
+            <div class="mt-8 bg-gray-900 rounded-lg p-4 text-xs text-green-400 font-mono text-left h-32 overflow-hidden border border-gray-700">
+                <div id="aiScanLogs" class="space-y-1 opacity-70"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- แจ้งเตือนขนาดเล็ก (Toast) -->
+    <div id="toastNotification" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full text-sm font-medium opacity-0 transition-opacity duration-300 pointer-events-none z-200 whitespace-nowrap shadow-xl"></div>
+
+    <script src="console.js"></script>
+</body>
+</html>
